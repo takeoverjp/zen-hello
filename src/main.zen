@@ -1,6 +1,51 @@
 const std = @import("std");
+const equal = std.testing.equal;
+
+test "Bit shift for signed 8bit integer" {
+    const signed: i8 = @bitCast(i8, u8(0x80));
+    equal(-128, signed);
+    equal(0x08 * -1, signed >> 4);
+    // equal(-1, signed);
+}
+
+test "Bit shift for signed 16bit integer" {
+    const signed: i16 = @bitCast(i16, u16(0x8000));
+    equal(-32_768, signed);
+    equal(0x0800 * -1, signed >> 4);
+    equal(0x0080 * -1, signed >> 8);
+    equal(0x0008 * -1, signed >> 12);
+}
+
+test "Bit shift for signed 32bit integer" {
+    const signed: i32 = @bitCast(i32, u32(0x8000_0000));
+    equal(-2_147_483_648, signed);
+    equal(0x0800_0000 * -1, signed >> 4);
+    equal(0x0008_0000 * -1, signed >> 12);
+    equal(0x0000_0800 * -1, signed >> 20);
+}
+
+test "Bit shift for unsigned 8bit integer" {
+    const unsigned: u8 = 0xff;
+    equal(0x0f, unsigned >> 4);
+    equal(0x01, unsigned >> 7);
+}
+
+test "Bit shift for unsigned 16bit integer" {
+    const unsigned: u16 = 0xffff;
+    equal(0x0fff, unsigned >> 4);
+    equal(0x00ff, unsigned >> 8);
+    equal(0x000f, unsigned >> 12);
+}
+
+test "Bit shift for unsigned 8bit integer" {
+    const unsigned: u32 = 0xffff_ffff;
+    equal(0x00ff_ffff, unsigned >> 8);
+    equal(0x0000_ffff, unsigned >> 16);
+    equal(0x0000_00ff, unsigned >> 24);
+}
 
 pub fn main() anyerror!void {
+    equal(0, 0);
     const stdout = try std.fs.getStdOut();
     try stdout.write("Hello, world!\n");
 }
